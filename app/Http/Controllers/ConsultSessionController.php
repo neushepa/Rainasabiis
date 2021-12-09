@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\ConsultSession;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class ConsultSessionController extends Controller
 {
@@ -24,6 +23,7 @@ class ConsultSessionController extends Controller
 
         return view('admin.consult-session.index', $data);
     }
+
     /**
      * Show the form for creating a new resource.
      *

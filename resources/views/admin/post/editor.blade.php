@@ -35,22 +35,29 @@ $url = Route::current()->getName();
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Title</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="title" class="form-control" value="{{ str_contains($url, 'edit') ? $post->title : '' }}">
+                                        <input type="text" name="title" class="form-control"
+                                            value="{{ str_contains($url, 'edit') ? $post->title : '' }}">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Slug</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="slug" class="form-control" value="{{ str_contains($url, 'edit') ? $post->slug : '' }}">
+                                        <input type="text" name="slug" class="form-control"
+                                            value="{{ str_contains($url, 'edit') ? $post->slug : '' }}">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Category</label>
+                                    <label
+                                        class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Category</label>
                                     <div class="col-sm-12 col-md-7">
                                         <select name="category" id="category" class="form-control" required autofocus>
-                                            <option value="">Category</option>
+                                            <!-- <option value="">Category</option>
                                             @foreach($categories as $category)
                                             <option value="{{ str_contains($url, 'edit') ? $post->category_id : $category->id }}">{{ $category->category_name }}</option>
+                                            @endforeach -->
+                                            @foreach ($categories as $category)
+                                            <option value="{{ $category->id}}" {{old('category_id')==$category->
+                                                id?'selected' : ''}}>{{ $category->category_name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -58,13 +65,16 @@ $url = Route::current()->getName();
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Excerpt</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="excerpt" class="form-control" value="{{ str_contains($url, 'edit') ? $post->excerpt : '' }}">
+                                        <input type="text" name="excerpt" class="form-control"
+                                            value="{{ str_contains($url, 'edit') ? $post->excerpt : '' }}">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Body</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <textarea class="summernote-simple" name="body">{{ str_contains($url, 'edit') ? $post->body : '' }}</textarea></div>
+                                        <textarea class="form-control summernote" style="display: none;"
+                                            name="body">{{ str_contains($url, 'edit') ? $post->body : '' }}</textarea>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group row mb-4">

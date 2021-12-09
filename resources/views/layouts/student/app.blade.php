@@ -28,13 +28,13 @@
   <div id="app">
     <div class="main-wrapper">
       <div class="navbar-bg"></div>
-            @include('layouts.admin.navbar')
-            @include('layouts.admin.sidebar')
+            @include('layouts.student.navbar')
+            @include('layouts.student.sidebar')
 
 
         @yield('content')
 
-        @include('layouts.admin.footer')
+        @include('layouts.student.footer')
     </div>
   </div>
 

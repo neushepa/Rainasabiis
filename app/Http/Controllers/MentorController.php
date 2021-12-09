@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -15,17 +14,17 @@ class MentorController extends Controller
     public function index()
     {
         $data = [
-            'title' => 'Ubah Mentor',
+            'title' => 'Mentors',
             'method' => 'GET',
             'route' => route('user.mentor.create'),
             'user' => User::where([
-                ['role', 'mentor'],
-                ['id', auth()->user()->id]
+                ['role', 'mentor']
             ])->paginate(10)
         ];
 
         return view('admin.mentor.index', $data);
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -34,7 +33,7 @@ class MentorController extends Controller
     public function create()
     {
         $data = [
-            'title' => 'Create User',
+            'title' => 'Mentor',
             'method' => 'POST',
             'route' => route('user.mentor.store')
         ];
@@ -75,7 +74,7 @@ class MentorController extends Controller
     public function edit($id)
     {
         $data = [
-            'title' => 'Ubah',
+            'title' => '/ Edit Mentor',
             'method' => 'PUT',
             'route' => route('user.mentor.update', $id),
             'user' => User::find($id)

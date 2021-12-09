@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class StudentMiddleware
+class AdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,9 +15,9 @@ class StudentMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user()->role == 'student') {
+        if ($request->user()->role == 'admin') {
             return $next($request);
         }
-        return redirect('student/dashboard');
+        return redirect('admin/dashboard');
     }
 }
