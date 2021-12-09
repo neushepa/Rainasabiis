@@ -23,12 +23,12 @@ Route::get('/gallery', [FrontendController::class, 'gallery']);
 
 
 // also frontend, but for logeed in user and student role
-Route::middleware(['auth', 'student'])->group(function () {
-    Route::get('/consult', [FrontendController::class, 'consult'])->middleware('student')->name('frontend.consult');
+Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::get('/consult', [FrontendController::class, 'consult'])->name('frontend.consult');
 });
 // End Route for Frontend View
 
-Route::group(['middleware' => ['auth', 'mentor']], function () {
+Route::group(['middleware' => ['auth', 'role:mentor']], function () {
     Route::prefix('admin/user')->group(function () {
         Route::prefix('student')->group(function () {
             Route::get('/', [StudentController::class, 'index'])->name('user.student.index');
