@@ -1,29 +1,30 @@
 @extends('layouts.admin.app')
-@section ('content')
+
+@section('content')
 <div class="main-content" style="min-height: 555px;">
     <section class="section">
         <div class="section-header">
-            <h1>Student</h1>
+            <h1>Galleries</h1>
             <div class="section-header-button">
-                <a href="{{ $route }}" class="btn btn-primary">Add New</a>
+                <a href="{{ route('gallery.create') }}" class="btn btn-primary">Add New</a>
             </div>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="/dashboard">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Student</a></div>
-                <div class="breadcrumb-item">All Student</div>
+                <div class="breadcrumb-item"><a href="#">Gallery</a></div>
+                <div class="breadcrumb-item">All Gallery</div>
             </div>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Student</h2>
+            <h2 class="section-title">Gallery</h2>
             <p class="section-lead">
-                You can manage all Student, such as editing, deleting and more.
+                You can manage all Gallery, such as editing, deleting and more.
             </p>
 
             <div class="row mt-4">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Student</h4>
+                            <h4>All Gallery</h4>
                         </div>
                         <div class="card-body">
 
@@ -34,25 +35,27 @@
                                 <table id="table_id" class="display">
                                     <thead>
                                         <tr>
-                                            <th>Nama</th>
-                                            <th>Email</th>
+                                            <th>Title</th>
+                                            <th>Created At</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($user as $u)
+                                        @foreach ($galleries as $gallery)
                                         <tr>
-                                            <td>{{ $u->name }}
+                                            <td>{{ $gallery->title }}
                                                 <div class="table-links">
-                                                    <a href="{{ route('user.student.edit',$u->id) }}">Edit</a>
+                                                    <a href="{{ route('gallery.edit',$gallery) }}">Edit</a>
                                                     <div class="bullet"></div>
                                                     <a href="#" class="delete-data">Delete</a>
-                                                    <form action="{{ route('user.student.destroy',$u->id) }}" method="POST">
+                                                    <form class="d-inline" action="{{ route('gallery.destroy', $gallery) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
+                                                    <div class="bullet"></div>
+                                                    <a href="{{ route('gallery.show', $gallery) }}">Show</a>
                                                 </div>
                                             </td>
-                                            <td>{{ $u->email }}</td>
+                                            <td>{{ $gallery->created_at }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -65,13 +68,4 @@
         </div>
     </section>
 </div>
-@endsection
-
-@section('script')
-<script>
-    $(document).ready(function() {
-        $('#table_id').DataTable();
-    });
-
-</script>
 @endsection

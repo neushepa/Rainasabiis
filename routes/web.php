@@ -6,24 +6,20 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\BlogController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ConsultSessionController;
+use App\Http\Controllers\GalleryController;
+use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
 // Start Route for Frontend View
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('/about', [FrontendController::class, 'about'])->name('frontend.about');
-//Route::get('/blog', [FrontendController::class, 'blog'])->name('frontend.blog');
-Route::get('/blog', BlogController::class . '@index');
-Route::get('/blog/{slug}', BlogController::class . '@show');
-Route::resource('post', PostController::class);
-
-Route::get('/gallery', function () {
-    return view('frontend.gallery');
-});
+Route::get('/blog', [FrontendController::class, 'blog']);
+Route::get('/blog/{post:slug}', [FrontendController::class, 'post']);
+Route::get('/gallery', [FrontendController::class, 'gallery']);
 
 
 // also frontend, but for logeed in user and student role
@@ -62,8 +58,9 @@ Route::group(['middleware' => ['auth', 'mentor']], function () {
         Route::delete('/delete/{id}', [ConsultSessionController::class, 'destroy'])->name('consult-session.destroy');
     });
 
-    //Route::resource('post', PostController::class);
+    Route::resource('post', PostController::class);
     Route::resource('category', CategoryController::class);
     Route::resource('todo', TodoController::class);
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+    Route::resource('admin/gallery', GalleryController::class);
 });

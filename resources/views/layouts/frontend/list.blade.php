@@ -2,15 +2,15 @@
     <div class="container">
       <h1 class="text-center wow fadeInUp">Artikel terbaru</h1>
       <div class="row mt-5">
-      @foreach ($post as $p)
+        @foreach ($post as $p)
         <div class="col-lg-4 py-2 wow zoomIn">
           <div class="card-blog">
             <div class="header">
               <div class="post-category">
                 <a href="#">{{ $p->category->category_name }}</a>
               </div>
-              <a href="blog-details.html" class="post-thumb">
-                <img src="../assets/beka/img/blog/bullying.png" alt="">
+              <a href="/post/{{ $p['slug'] }}"" class="post-thumb">
+                <img src="{{ asset('images/banners/'.$p->banner) }}" alt="">
               </a>
             </div>
             <div class="body">
@@ -18,7 +18,7 @@
               <div class="site-info">
                 <div class="avatar mr-2">
                   <div class="avatar-img">
-                    <img src="../assets/beka/img/person/detik.png" alt="">
+                    <img src="{{ $p->user->photo }}" alt="">
                   </div>
                   <span>{{ $p->user->name }}</span>
                 </div>
