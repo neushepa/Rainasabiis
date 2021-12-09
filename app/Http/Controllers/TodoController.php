@@ -17,7 +17,7 @@ class TodoController extends Controller
     {
         $data= [
             'title' => 'List Todo',
-            'todo'  => Todo::get(),
+            'todo'  => Todo::where('user_id', auth()->user()->id)->get(),
             'route' => route('todo.create'),
         ];
         return view('admin.todo.index', $data);

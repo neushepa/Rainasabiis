@@ -9,12 +9,25 @@ class ConsultSession extends Model
 {
     use HasFactory;
 
-    protected $appends = ['mentor'];
+    protected $appends = ['mentor', 'start_at', 'end_at'];
+    protected $guarded = ['id'];
 
     public function getMentorAttribute()
     {
         $mentor = \App\Models\User::find($this->mentor_id);
         return $mentor->name;
+    }
+
+    public function getStartAtAttribute()
+    {
+        $waktu = [1=>'08:00', '11:00', '14:00'];
+        return $waktu[$this->sesi_ke];
+    }
+
+    public function getEndAtAttribute()
+    {
+        $waktu = [1=>'10:00', '13:00', '15:00'];
+        return $waktu[$this->sesi_ke];
     }
 
     public function user()

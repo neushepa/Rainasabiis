@@ -39,7 +39,6 @@
                                             <th>Mentor</th>
                                             <th>Dimulai</th>
                                             <th>Berakhir</th>
-
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -47,7 +46,7 @@
                                         <tr>
                                             <td>{{ $c->topic }}
                                                 <div class="table-links">
-                                                    <a href="{{ route('consult-session.edit',$c->id) }}">Edit</a>
+                                                    <a href="#" data-id="{{ $c->id }}" class="modal_button">Accept</a>
                                                     <div class="bullet"></div>
                                                     <a href="#" onclick="event.preventDefault(); $('#destroy-{{ $c->id }}').submit()">Delete</a>
                                                     <form id="destroy-{{ $c->id }}" action="{{ route('consult-session.destroy',$c->id) }}" method="POST">
@@ -79,6 +78,29 @@
     $(document).ready(function() {
         $('#table_id').DataTable();
     });
-
+    $('.modal_button').on('click', async function(){
+        const { value: url } = await Swal.fire({
+            input: 'url',
+            inputLabel: 'URL address',
+            inputPlaceholder: 'Enter the URL'
+        })
+        if(url){
+            $.ajax({
+                url: '/admin/consult-session/save-link/'+$(this).data('id'),
+                method: 'post',
+                data: {
+                    _token: $('input[name=_token]').val(),
+                    _method: 'put',
+                    url: url
+                },
+                success: (title)=>{
+                    Toast.fire({
+                        icon:'success',
+                        title
+                    })
+                }
+            })
+        }
+    })
 </script>
 @endsection

@@ -43,4 +43,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function mentor_consult_sessions()
+    {
+        return $this->hasMany(ConsultSession::class, 'mentor_id', 'id');
+    }
 }

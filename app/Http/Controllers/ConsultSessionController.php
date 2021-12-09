@@ -15,11 +15,12 @@ class ConsultSessionController extends Controller
      */
     public function index()
     {
+        date_default_timezone_set('Asia/Jakarta');
         $data = [
             'title' => 'Konsultasi',
             'method' => 'GET',
             'route' => route('consult-session.create'),
-            'consult' => ConsultSession::get()
+            'consult' => ConsultSession::where('mentor_id', auth()->user()->id)->whereDate('created_at', date('Y-m-d'))->get()
         ];
 
         return view('admin.consult-session.index', $data);
@@ -119,6 +120,12 @@ class ConsultSessionController extends Controller
         return redirect()->route('consult-session.index')->with('success', 'Consult has been updated');
     }
 
+    public function save_link(Request $request, ConsultSession $consult)
+    {
+        $consult->update(['link'=>$request->url]);
+        return response()->json("Berhasil menerima jadwal ".$consult->user->name);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -130,4 +137,5 @@ class ConsultSessionController extends Controller
         ConsultSession::find($id)->delete();
         return redirect()->route('consult-session.index')->with('success', 'Consult has been deleted');
     }
+
 }

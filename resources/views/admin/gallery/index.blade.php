@@ -69,3 +69,9 @@
     </section>
 </div>
 @endsection
+
+@section('script')
+    <script>
+        $('#table_id').DataTable()
+    </script>
+@endsection

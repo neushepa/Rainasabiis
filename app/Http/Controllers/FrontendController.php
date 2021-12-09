@@ -13,10 +13,8 @@ class FrontendController extends Controller
     public function index()
     {
         $data = [
-            //'title' => 'Blog List',
             'post' => Post::orderBy('created_at','desc')->paginate(3),
         ];
-        //dd($data);
         return view('/frontend.home',$data);
 
     }
