@@ -120,10 +120,11 @@ Route::prefix('student/testimoni')->group(function () {
     Route::get('/create', [TestimoniController::class, 'create'])->name('testimoni.create');
     Route::post('/store', [TestimoniController::class, 'store'])->name('testimoni.store');
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-    Route::get('/profile/edit/{id}', [StuProfileController::class, 'edit'])->name('student.profile.edit');
-    Route::put('/profile/update/{id}', [StuProfileController::class, 'update'])->name('student.profile.update');
 
     // Start Route for Student Testimoni
     Route::get('/testimoni', [StuTestimoniController::class, 'create'])->name('student.testimoni.create');
     Route::post('/testimoni/store', [StuTestimoniController::class, 'store'])->name('student.testimoni.store');
 });
+
+Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::put('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');

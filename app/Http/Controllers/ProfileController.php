@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use \App\Models\User;
@@ -69,7 +70,6 @@ class ProfileController extends Controller
             'pro' => User::where('id', $id)->first(),
         ];
         return view('admin.user.index', $data);
-        dd($data);
     }
 
     /**
@@ -95,6 +95,13 @@ class ProfileController extends Controller
         $pro->facebook = $request->facebook;
         $pro->twitter = $request->twitter;
         $pro->bio = $request->bio;
+
+        if ($request->hasFile('photo')) {
+            $image = $request->file('photo');
+            $filename = $pro->name . '-' . $pro->id . '.' . $image->getClientOriginalExtension();
+            $location = $request->file('photo')->move('images/users/', $filename);
+            $pro->photo = $location;
+        }
 
         $pro->save();
         return redirect()->route('profile.edit', $id)->with('success', 'Profile Updated');
