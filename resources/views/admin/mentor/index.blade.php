@@ -44,10 +44,10 @@
                                         <tr>
                                             <td>{{ $u->name }}
                                                 <div class="table-links">
-                                                    <a href="{{ route('user.mentor.edit',$u->id) }}">Edit</a>
+                                                    <a href="{{ route('mentor.edit',$u->id) }}">Edit</a>
                                                     <div class="bullet"></div>
                                                     <a href="#" onclick="event.preventDefault(); $('#destroy-{{ $u->id }}').submit()">Delete</a>
-                                                    <form id="destroy-{{ $u->id }}" action="{{ route('user.mentor.destroy',$u->id) }}" method="POST">
+                                                    <form id="destroy-{{ $u->id }}" action="{{ route('mentor.destroy',$u->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>

@@ -17,31 +17,31 @@
                     <a href="#" class="nav-link has-dropdown"><i class="fas fa-edit"></i> <span>Artikel</span></a>
                     <ul class="dropdown-menu" style="display: none;">
                         <li class="active"><a class="nav-link" href="/post">Posting</a></li>
-                        <li class="active"><a class="nav-link" href="/category">Kategori</a></li>
+                        <li class="active"><a class="nav-link" href="{{ route('category.index') }}">Kategori</a></li>
                     </ul>
                     <li><a class="nav-link" href="#"><i class="fas fa-image"></i> <span>Galeri</span></a></li>
                 </li>
                 @endif
-                <li><a class="nav-link" href="/{{ (Auth::user()->role == 'admin') ? 'admin' : (Auth::user()->role == 'mentor') ? 'mentor' : 'student' }}/testimoni"><i class="fas fa-image"></i> <span>Testimoni</span></a></li>
+                <li><a class="nav-link" href="{{ route('testimoni.index') }}"><i class="fas fa-image"></i> <span>Testimoni</span></a></li>
 
                 <li>
                 <li class="dropdown active">
                     <a href="#" class="nav-link has-dropdown"><i class="fas fa-user"></i> <span>Pengguna</span></a>
                     <ul class="dropdown-menu" style="display: none;">
                         @if(Auth::user()->role == 'admin')
-                        <li class="active"><a class="nav-link" href="/admin/user/mentor">Mentor</a></li>
+                        <li class="active"><a class="nav-link" href="{{ route('mentor.index') }}">Mentor</a></li>
                         @endif
                         <li class="active"><a class="nav-link" href="/admin/user/student">Siswa</a></li>
                     </ul>
                 </li>
                 </li>
-                <li>
+                <li>@if(Auth::user()->role == 'admin' || Auth::user()->role == 'mentor')
                 <li class="dropdown active">
                     <a href="#" class="nav-link has-dropdown"><i class="fas fa-comment-dots"></i> <span>Konsultasi</span></a>
                     <ul class="dropdown-menu" style="display: none;">
                         <li class="active"><a class="nav-link" href="/admin/consult-session">Kelola Jadwal</a></li>
                     </ul>
-                </li>
+                </li>@endif
                 </li>
                 <li>
                 <li class="dropdown active">

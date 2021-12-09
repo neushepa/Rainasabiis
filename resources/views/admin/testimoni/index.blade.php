@@ -60,7 +60,7 @@
                                 <td>{{ $ts->user->name }}</td>
                                 <td>{!! ($ts->status == 0) ? '<span style="color: red;">Not Approved</span>' : '<span style="color: green;">Approved</span>' !!}</td>
                             </tr>
-                            @else
+                            @elseif(Auth::user()->role == 'mentor' || Auth::user()->role == 'admin')
                             <tr>
                                 <td>{{ $ts->title }}<div class="table-links">
                               <a href="{{ route('testimoni.edit',$ts->id) }}">Edit</a>

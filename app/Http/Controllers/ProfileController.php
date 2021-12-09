@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use \App\Models\User;
@@ -94,6 +93,11 @@ class ProfileController extends Controller
         $pro->instagram = $request->instagram;
         $pro->facebook = $request->facebook;
         $pro->twitter = $request->twitter;
+
+        if ($request->password) {
+            $pro->password = bcrypt($request->password);
+        }
+
         $pro->bio = $request->bio;
 
         if ($request->hasFile('photo')) {

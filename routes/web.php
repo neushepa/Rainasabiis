@@ -55,7 +55,7 @@ Route::middleware(['auth', 'student'])->group(function () {
 // End Route for Frontend View
 
 // Start Route for Mentor
-Route::group(['middleware' => ['auth', 'mentor']], function () {
+Route::group(['middleware' => 'auth'], function () {
     Route::prefix('admin/user')->group(function () {
         Route::prefix('student')->group(function () {
             Route::get('/', [StudentController::class, 'index'])->name('user.student.index');
@@ -69,12 +69,12 @@ Route::group(['middleware' => ['auth', 'mentor']], function () {
 
     Route::prefix('mentor')->group(function () {
         Route::get('/dashboard', [FrontendController::class, 'consult'])->middleware('mentor')->name('mentor.dashboard');
-        Route::get('/', [MentorController::class, 'index'])->name('user.mentor.index');
-        Route::get('/create', [MentorController::class, 'create'])->name('user.mentor.create');
-        Route::post('/store', [MentorController::class, 'store'])->name('user.mentor.store');
-        Route::get('/edit/{id}', [MentorController::class, 'edit'])->name('user.mentor.edit');
-        Route::put('/update/{id}', [MentorController::class, 'update'])->name('user.mentor.update');
-        Route::delete('/delete/{id}', [MentorController::class, 'destroy'])->name('user.mentor.destroy');
+        Route::get('/', [MentorController::class, 'index'])->name('mentor.index');
+        Route::get('/create', [MentorController::class, 'create'])->name('mentor.create');
+        Route::post('/store', [MentorController::class, 'store'])->name('mentor.store');
+        Route::get('/edit/{id}', [MentorController::class, 'edit'])->name('mentor.edit');
+        Route::put('/update/{id}', [MentorController::class, 'update'])->name('mentor.update');
+        Route::delete('/delete/{id}', [MentorController::class, 'destroy'])->name('mentor.destroy');
 
         Route::prefix('/testimoni')->group(function () {
             Route::get('/', [TestimoniController::class, 'index'])->name('testimoni.index');
@@ -106,6 +106,8 @@ Route::group(['middleware' => ['auth', 'mentor']], function () {
     // Route::get('admin/testimoni/', [TestimoniController::class, 'create'])->name('testimoni.create');
 });
 // End Route for Mentor
+
+// Start Route for Admin
 Route::prefix('admin/testimoni')->group(function () {
     Route::get('/', [TestimoniController::class, 'index'])->name('testimoni.index');
     Route::get('/create', [TestimoniController::class, 'create'])->name('testimoni.create');
@@ -114,6 +116,35 @@ Route::prefix('admin/testimoni')->group(function () {
     Route::put('/update/{id}', [TestimoniController::class, 'update'])->name('testimoni.update');
     Route::delete('/delete/{id}', [TestimoniController::class, 'destroy'])->name('testimoni.destroy');
 });
+
+Route::prefix('admin/dashboard')->group(function () {
+    Route::get('/', [TestimoniController::class, 'index'])->name('testimoni.index');
+    Route::get('/create', [TestimoniController::class, 'create'])->name('testimoni.create');
+    Route::post('/store', [TestimoniController::class, 'store'])->name('testimoni.store');
+    Route::get('/edit/{id}', [TestimoniController::class, 'edit'])->name('testimoni.edit');
+    Route::put('/update/{id}', [TestimoniController::class, 'update'])->name('testimoni.update');
+    Route::delete('/delete/{id}', [TestimoniController::class, 'destroy'])->name('testimoni.destroy');
+});
+
+Route::prefix('/testimoni')->group(function () {
+    Route::get('/', [TestimoniController::class, 'index'])->name('testimoni.index');
+    Route::get('/create', [TestimoniController::class, 'create'])->name('testimoni.create');
+    Route::post('/store', [TestimoniController::class, 'store'])->name('testimoni.store');
+    Route::get('/edit/{id}', [TestimoniController::class, 'edit'])->name('testimoni.edit');
+    Route::put('/update/{id}', [TestimoniController::class, 'update'])->name('testimoni.update');
+    Route::delete('/delete/{id}', [TestimoniController::class, 'destroy'])->name('testimoni.destroy');
+});
+
+Route::prefix('admin/category')->group(function () {
+    Route::get('/', [CategoryController::class, 'index'])->name('category.index');
+    Route::get('/create', [CategoryController::class, 'create'])->name('category.create');
+    Route::post('/store', [CategoryController::class, 'store'])->name('category.store');
+    Route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('category.edit');
+    Route::put('/update/{id}', [CategoryController::class, 'update'])->name('category.update');
+    Route::delete('/delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
+});
+
+// End Route for Admin
 
 Route::prefix('student/testimoni')->group(function () {
     Route::get('/', [TestimoniController::class, 'index'])->name('testimoni.index');
