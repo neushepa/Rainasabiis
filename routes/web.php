@@ -6,33 +6,37 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\BlogController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ConsultSessionController;
+use App\Http\Controllers\Student\ConsultSessionController as StudentConsultSessionController;
+use App\Http\Controllers\GalleryController;
+use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
 // Start Route for Frontend View
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('/about', [FrontendController::class, 'about'])->name('frontend.about');
-//Route::get('/blog', [FrontendController::class, 'blog'])->name('frontend.blog');
-Route::get('/blog', BlogController::class . '@index');
-Route::get('/blog/{slug}', BlogController::class . '@show');
-Route::resource('post', PostController::class);
-
-Route::get('/gallery', function () {
-    return view('frontend.gallery');
-});
+Route::get('/blog', [FrontendController::class, 'blog']);
+Route::get('/blog/{post:slug}', [FrontendController::class, 'post']);
+Route::get('/gallery', [FrontendController::class, 'gallery']);
 
 
 // also frontend, but for logeed in user and student role
-Route::middleware(['auth', 'student'])->group(function () {
-    Route::get('/consult', [FrontendController::class, 'consult'])->middleware('student')->name('frontend.consult');
+Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::get('/consult', [FrontendController::class, 'consult'])->name('frontend.consult');
+    Route::prefix('student')->as('student.')->group(function(){
+        Route::get('consult-session', [StudentConsultSessionController::class, 'index']);
+        Route::get('consult-session/history', [StudentConsultSessionController::class, 'history']);
+        Route::post('consult-session', [StudentConsultSessionController::class, 'store']);
+        Route::get('mentor/{mentor}', [StudentConsultSessionController::class, 'get_mentor']);
+    });
 });
 // End Route for Frontend View
 
-Route::group(['middleware' => ['auth', 'mentor']], function () {
+Route::group(['middleware' => ['auth', 'role:admin']], function () {
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard')->withoutMiddleware('role:admin');
     Route::prefix('admin/user')->group(function () {
         Route::prefix('student')->group(function () {
             Route::get('/', [StudentController::class, 'index'])->name('user.student.index');
@@ -53,17 +57,18 @@ Route::group(['middleware' => ['auth', 'mentor']], function () {
         });
     });
 
-    Route::prefix('admin/consult-session')->group(function () {
+    Route::prefix('admin/consult-session')->withoutMiddleware('role:admin')->middleware('role:admin,mentor')->group(function () {
         Route::get('/', [ConsultSessionController::class, 'index'])->name('consult-session.index');
         Route::get('/create', [ConsultSessionController::class, 'create'])->name('consult-session.create');
         Route::post('/store', [ConsultSessionController::class, 'store'])->name('consult-session.store');
         Route::get('/edit/{id}', [ConsultSessionController::class, 'edit'])->name('consult-session.edit');
         Route::put('/update/{id}', [ConsultSessionController::class, 'update'])->name('consult-session.update');
         Route::delete('/delete/{id}', [ConsultSessionController::class, 'destroy'])->name('consult-session.destroy');
+        Route::put('/save-link/{consult}', [ConsultSessionController::class, 'save_link'])->name('consult-session.save-link');
     });
 
-    //Route::resource('post', PostController::class);
+    Route::resource('post', PostController::class);
     Route::resource('category', CategoryController::class);
-    Route::resource('todo', TodoController::class);
-    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+    Route::resource('todo', TodoController::class)->withoutMiddleware('role:admin');
+    Route::resource('admin/gallery', GalleryController::class);
 });

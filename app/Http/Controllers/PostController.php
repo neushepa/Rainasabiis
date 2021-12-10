@@ -50,14 +50,19 @@ class PostController extends Controller
         $post = new Post;
         $user_id = auth()->user()->id;
 
+        $file = $request->file('banner');
+        $banner = 'banner-'.uniqid().'.'.$file->getClientOriginalExtension();
+        $file->move('images/banners/', $banner);
+
         $post->user_id = $user_id;
+        $post->banner = $banner;
         $post->title = $request->title;
         $post->slug = $request->slug;
         $post->category_id = $request->category;
         $post->excerpt = $request->excerpt;
         $post->body = $request->body;
         $post->save();
-        return redirect()->route('post.index');
+        return redirect()->route('post.index')->with('success', 'Post created successfully');
     }
 
     /**
@@ -66,14 +71,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($slug)
+    public function show(Post $post)
     {
-            $data = [
-                'title' => 'Post Detail',
-                'post' => Post::where('slug',$slug)->first()
-            ];
-            //dd($data);
-            return view('frontend.post',$data);
+        return view('admin.post.show', compact('post'));
     }
 
     /**
@@ -92,7 +92,6 @@ class PostController extends Controller
             'categories' => Category::get(),
         ];
         return view('admin.post.editor', $data);
-        //dd($data);
     }
 
     /**
@@ -107,15 +106,23 @@ class PostController extends Controller
         $post = Post::find($id);
         $user_id = auth()->user()->id;
 
-        //$post->user_id = $user_id;
+        if($request->hasFile('banner')){
+            $file = $request->file('banner');
+            if(file_exists(public_path('images/banners/'.$post->banner))){
+                unlink(public_path('images/banners/'.$post->banner));
+            }
+            $banner = 'banner'.uniqid().'.'.$file->getClientOriginalExtension();
+            $file->move('images/banners/', $banner);
+            $post->banner = $banner;
+        }
+
         $post->title = $request->title;
         $post->slug = $request->slug;
         $post->category_id = $request->category;
         $post->excerpt = $request->excerpt;
         $post->body = $request->body;
         $post->update();
-        return redirect()->route('post.index');
-        //dd($request, $id);
+        return redirect()->route('post.index')->with('success', 'Post updated successfully');
     }
 
     /**
@@ -127,7 +134,10 @@ class PostController extends Controller
     public function destroy($id)
     {
         $destroy = Post::where('id', $id);
+        if(file_exists(public_path('images/banners/'.$destroy->banner))){
+            unlink(public_path('images/banners/'.$destroy->banner));
+        }
         $destroy->delete();
-        return redirect(route("post.index"));
+        return back()->with('success', 'Post deleted successfully');
     }
 }
