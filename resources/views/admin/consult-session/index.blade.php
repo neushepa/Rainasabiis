@@ -48,7 +48,7 @@
                                                 <div class="table-links">
                                                     <a href="#" data-id="{{ $c->id }}" class="modal_button">Accept</a>
                                                     <div class="bullet"></div>
-                                                    <a href="#" onclick="event.preventDefault(); $('#destroy-{{ $c->id }}').submit()">Delete</a>
+                                                    <a href="#" class="delete-data">Delete</a>
                                                     <form id="destroy-{{ $c->id }}" action="{{ route('consult-session.destroy',$c->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')

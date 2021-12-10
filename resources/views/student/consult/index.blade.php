@@ -32,7 +32,7 @@
                                 @endif
                             </div>
                             <div class="card-body">
-                            @if ($consult->exists())
+                            @if ($consult)
                                 <div class="alert alert-success">Anda sudah membuat jadwal konsultasi hari ini.</div>
                             @else
                                 @csrf

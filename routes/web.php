@@ -4,28 +4,18 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConsultSessionController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Student\ConsultSessionController as StudentConsultSessionController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TodoController;
-use App\Http\Controllers\Student\ConsultSessionController as StudentConsultSessionController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
 // Start Route for Frontend View
-Route::get('/home', function () {
-    if (Auth::user()->role == 'admin') {
-        return redirect('/admin/dashboard');
-    } elseif (Auth::user()->role == 'mentor') {
-        return redirect('/mentor/dashboard');
-    } elseif (Auth::user()->role == 'student') {
-        return redirect('/student/dashboard');
-    } else {
-        return redirect('/');
-    }
-})->name('home');
 Route::get('/', [FrontendController::class, 'index']);
 Route::get('/about', [FrontendController::class, 'about'])->name('frontend.about');
 Route::get('/blog', [FrontendController::class, 'blog']);
@@ -100,22 +90,12 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::resource('admin/gallery', GalleryController::class);
 });
 
-Route::prefix('admin/category')->group(function () {
-    Route::get('/', [CategoryController::class, 'index'])->name('category.index');
-    Route::get('/create', [CategoryController::class, 'create'])->name('category.create');
-    Route::post('/store', [CategoryController::class, 'store'])->name('category.store');
-    Route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('category.edit');
-    Route::put('/update/{id}', [CategoryController::class, 'update'])->name('category.update');
-    Route::delete('/delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
-});
-
 // End Route for Admin
 
 Route::prefix('student/testimoni')->group(function () {
     Route::get('/', [TestimoniController::class, 'index'])->name('testimoni.index');
     Route::get('/create', [TestimoniController::class, 'create'])->name('testimoni.create');
     Route::post('/store', [TestimoniController::class, 'store'])->name('testimoni.store');
-    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
     // Start Route for Student Testimoni
     Route::get('/testimoni', [StuTestimoniController::class, 'create'])->name('student.testimoni.create');

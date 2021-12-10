@@ -19,7 +19,7 @@ class ConsultSessionController extends Controller
             if(!is_null($consult->link)){
                 $link = '<button type="button" class="btn btn-warning">Belum Waktunya</button>';
                 if($consult->start_at<=date('H:i')&&$consult->end_at>=date('H:i')){
-                    $link = '<a href="'.$consult->link.'" class="btn btn-primary">Link Konsultasi</a>';
+                    $link = '<a href="'.$consult->link.'" target="_blank" class="btn btn-primary">Link Konsultasi</a>';
                 }
             }
         }
