@@ -3,7 +3,7 @@
 <div class="main-content" style="min-height: 555px;">
     <section class="section">
         <div class="section-header">
-            <h1>Mentor</h1>
+            <h1>{{ $title }}</h1>
             <div class="section-header-button">
                 <a href="{{ $route }}" class="btn btn-primary">Add New</a>
             </div>
@@ -18,6 +18,7 @@
             <p class="section-lead">
                 You can manage all {{ $title }}, such as editing, deleting and more.
             </p>
+
 
             <div class="row mt-4">
                 <div class="col-12">
@@ -34,25 +35,31 @@
                                 <table id="table_id" class="display">
                                     <thead>
                                         <tr>
-                                            <th>Nama</th>
-                                            <th>Email</th>
+                                            <th>Topik</th>
+                                            <th>Mentor</th>
+                                            <th>Dimulai</th>
+                                            <th>Berakhir</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($user as $u)
+                                        @foreach ($consult as $c)
                                         <tr>
-                                            <td>{{ $u->name }}
+                                            <td>{{ $c->topic }}
                                                 <div class="table-links">
-                                                    <a href="{{ route('mentor.edit',$u->id) }}">Edit</a>
+                                                    <a href="{{ route('consult-session.edit',$c->id) }}">Edit</a>
                                                     <div class="bullet"></div>
-                                                    <a href="#" class="delete-data">Delete</a>
-                                                    <form id="destroy-{{ $u->id }}" action="{{ route('user.student.destroy',$u->id) }}" method="POST">
+                                                    <a href="#" onclick="event.preventDefault(); $('#destroy-{{ $c->id }}').submit()">Delete</a>
+                                                    <form id="destroy-{{ $c->id }}" action="{{ route('consult-session.destroy',$c->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
                                                 </div>
                                             </td>
-                                            <td>{{ $u->email }}</td>
+                                            <td>{{ $c->mentor }}</td>
+                                            <td>{{ $c->start_at }}</td>
+                                            <td>{{ $c->end_at }}</td>
+
                                         </tr>
                                         @endforeach
                                     </tbody>

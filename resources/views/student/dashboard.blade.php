@@ -1,4 +1,4 @@
-@extends('layouts.admin.app')
+@extends('layouts.student.app')
 
 @section('content')
 <div class="main-content" style="min-height: 524px;">
@@ -17,7 +17,7 @@
                     <a href="/post"><h4>Artikel</h4></a>
                   </div>
                   <div class="card-body">
-                  {{ $articles }}
+
                   </div>
                 </div>
               </div>
@@ -32,7 +32,7 @@
                     <a href="/category"><h4>Kategori</h4></a>
                   </div>
                   <div class="card-body">
-                  {{ $categories }}
+
                   </div>
                 </div>
               </div>
@@ -47,7 +47,7 @@
                     <a href="/admin/user/mentor"><h4>Users</h4></a>
                   </div>
                   <div class="card-body">
-                  {{ $users }}
+
                   </div>
                 </div>
               </div>

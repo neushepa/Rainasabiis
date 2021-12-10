@@ -1,12 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\ConsultSession;
-use App\Models\User;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class FrontendController extends Controller
 {
@@ -25,7 +24,8 @@ class FrontendController extends Controller
             'sessions' => ConsultSession::where('user_id', auth()->user()->id)->get(),
             'mentor' => User::where('role', 'mentor')->get(),
         ];
-        return view('frontend.consult', $data);
+        //return view('frontend.consult', $data);
+        return view('student.dashboard', $data);
     }
 
     public function about()

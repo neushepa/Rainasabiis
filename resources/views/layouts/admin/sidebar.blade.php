@@ -1,7 +1,7 @@
 <div class="main-sidebar">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="/dashboard">Sahabatbk</a>
+            <a href="/" target="_blank"><img src="/assets/beka/img/logo.png.png" alt="Sahabat BK" height="100%"></a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="index.html">SBK</a>

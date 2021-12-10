@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -17,13 +16,13 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::insert(
             [
                 [
-                    'name' => 'Mentro Test',
-                    'email' => 'mentort@test.com',
+                    'name' => 'Salma Fauziah',
+                    'email' => 'salma@test.com',
                     'password' => bcrypt('123456'),
                     'role' => 'mentor',
                 ],
                 [
-                    'name' => 'Siswa Test',
+                    'name' => 'Siswa',
                     'email' => 'siswa@test.com',
                     'password' => bcrypt('123456'),
                     'role' => 'student',
@@ -33,7 +32,6 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\ConsultSession::insert(
             [
-
                 [
                     'topic' => 'Eh`tika 1',
                     'user_id' => 2,
