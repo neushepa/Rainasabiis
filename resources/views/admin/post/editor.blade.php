@@ -52,10 +52,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Category</label>
+                                    <label
+                                        class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Category</label>
                                     <div class="col-sm-12 col-md-7">
                                         <select name="category" id="category" class="form-control" required autofocus>
-                                            <option value="">Category</option>
+                                            <!-- <option value="">Category</option>-->
                                             @foreach($categories as $category)
                                             <option value="{{ $category->id }}" {{ old('category', $post->category_id??'')==$category->id?'selected':'' }}>{{ $category->category_name }}</option>
                                             @endforeach

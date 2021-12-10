@@ -1,9 +1,8 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
@@ -20,12 +19,12 @@ class StudentController extends Controller
             'route' => route('user.student.create'),
             'user' => User::where([
                 ['role', 'student']
-            //['id', auth()->user()->id]
             ])->paginate(10)
         ];
 
         return view('admin.student.index', $data);
     }
+
     /**
      * Show the form for creating a new resource.
      *

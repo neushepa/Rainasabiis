@@ -1,12 +1,23 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MentorController extends Controller
 {
+    public function __construct(request $request)
+    {
+        if (Auth::user()) {
+            if (Auth::user()->role != 'mentor' || Auth::user()->role != 'admin') {
+                return redirect('/');
+            }
+        } else {
+            return redirect('/');
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,17 +26,17 @@ class MentorController extends Controller
     public function index()
     {
         $data = [
-            'title' => 'Ubah Mentor',
+            'title' => 'Mentors',
             'method' => 'GET',
-            'route' => route('user.mentor.create'),
+            'route' => route('mentor.create'),
             'user' => User::where([
                 ['role', 'mentor']
-                //['id', auth()->user()->id]
             ])->paginate(10)
         ];
 
         return view('admin.mentor.index', $data);
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -34,9 +45,9 @@ class MentorController extends Controller
     public function create()
     {
         $data = [
-            'title' => 'Create User',
+            'title' => 'Mentor',
             'method' => 'POST',
-            'route' => route('user.mentor.store')
+            'route' => route('mentor.store')
         ];
 
         return view('admin.mentor.editor', $data);
@@ -63,7 +74,7 @@ class MentorController extends Controller
         $user->role = 'mentor';
         $user->save();
 
-        return redirect()->route('user.mentor.index')->with('success', 'User has been created');
+        return redirect()->route('mentor.index')->with('success', 'User has been created');
     }
 
     /**
@@ -75,9 +86,9 @@ class MentorController extends Controller
     public function edit($id)
     {
         $data = [
-            'title' => 'Ubah',
+            'title' => '/ Edit Mentor',
             'method' => 'PUT',
-            'route' => route('user.mentor.update', $id),
+            'route' => route('mentor.update', $id),
             'user' => User::find($id)
         ];
 
@@ -106,7 +117,7 @@ class MentorController extends Controller
         $user->role = 'mentor';
         $user->save();
 
-        return redirect()->route('user.mentor.index')->with('success', 'User has been updated');
+        return redirect()->route('mentor.index')->with('success', 'User has been updated');
     }
 
     /**
@@ -118,6 +129,6 @@ class MentorController extends Controller
     public function destroy($id)
     {
         User::find($id)->delete();
-        return redirect()->route('user.mentor.index')->with('success', 'User has been deleted');
+        return redirect()->route('mentor.index')->with('success', 'User has been deleted');
     }
 }
