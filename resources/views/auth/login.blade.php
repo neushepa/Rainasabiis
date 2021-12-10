@@ -55,26 +55,17 @@
                                     </button>
                                 </div>
 
-                            </form>
-                            <div class="text-center mt-4 mb-3">
-                                <div class="text-job text-muted">Masuk Menggunakan Sosial Media</div>
-                            </div>
-                            <div class="row sm-gutters">
-                                <div class="col-12">
-                                    <a class="btn btn-block btn-social btn-google">
-                                        <span class="fab fa-google"></span>Continue With Google
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="mt-5 text-muted text-center">
-                        Don't have an account? <a href="/register">Create One</a>
-                    </div> -->
-                    <div class="simple-footer">
-                        Copyright &copy; 2021 <a href="#" target="_blank">Sahabat BK</a>
-                    </div>
+                </form>
+                <div class="row sm-gutters">
                 </div>
+
+              </div>
+            </div>
+            <div class="mt-5 text-muted text-center">
+              Don't have an account? <a href="/register">Create One</a>
+            </div>
+            <div class="simple-footer">
+            Copyright &copy; 2021 <a href="/" target="_blank">Sahabatbk </a>
             </div>
         </div>
     </section>

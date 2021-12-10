@@ -1,29 +1,28 @@
 @extends('layouts.admin.app')
-@section ('content')
+
+@section('content')
 <div class="main-content" style="min-height: 555px;">
     <section class="section">
         <div class="section-header">
-            <h1>Student</h1>
-            <div class="section-header-button">
-                <a href="{{ $route }}" class="btn btn-primary">Add New</a>
-            </div>
+            <h1>Riwayat Konsultasi</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="/dashboard">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Student</a></div>
-                <div class="breadcrumb-item">All Student</div>
+                <div class="breadcrumb-item"><a href="#">Riwayat Konsultasi</a></div>
+                <div class="breadcrumb-item">All Riwayat Konsultasi</div>
             </div>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Student</h2>
+            <h2 class="section-title">Riwayat Konsultasi</h2>
             <p class="section-lead">
-                You can manage all Student, such as editing, deleting and more.
+                You can manage all Riwayat Konsultasi, such as editing, deleting and more.
             </p>
+
 
             <div class="row mt-4">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Student</h4>
+                            <h4>All Riwayat Konsultasi</h4>
                         </div>
                         <div class="card-body">
 
@@ -34,25 +33,19 @@
                                 <table id="table_id" class="display">
                                     <thead>
                                         <tr>
-                                            <th>Nama</th>
-                                            <th>Email</th>
+                                            <th>Topik</th>
+                                            <th>Mentor</th>
+                                            <th>Dimulai</th>
+                                            <th>Berakhir</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($user as $u)
+                                        @foreach ($consults as $c)
                                         <tr>
-                                            <td>{{ $u->name }}
-                                                <div class="table-links">
-                                                    <a href="{{ route('user.student.edit',$u->id) }}">Edit</a>
-                                                    <div class="bullet"></div>
-                                                    <a href="#" class="delete-data">Delete</a>
-                                                    <form action="{{ route('user.student.destroy',$u->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                    </form>
-                                                </div>
-                                            </td>
-                                            <td>{{ $u->email }}</td>
+                                            <td>{{ $c->topic }} </td>
+                                            <td>{{ $c->mentor }}</td>
+                                            <td>{{ $c->start_at }} WIB</td>
+                                            <td>{{ $c->end_at }} WIB</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -66,6 +59,7 @@
     </section>
 </div>
 @endsection
+
 
 @section('script')
 <script>

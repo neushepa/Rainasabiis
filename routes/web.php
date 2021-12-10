@@ -1,43 +1,26 @@
 <?php
 
-use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConsultSessionController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Student\ConsultSessionController as StudentConsultSessionController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\StuProfileController;
-use App\Http\Controllers\StuTestimoniController;
-use App\Http\Controllers\TestimoniController;
 use App\Http\Controllers\TodoController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
 // Start Route for Frontend View
-Route::get('/home', function () {
-    if (Auth::user()->role == 'admin') {
-        return redirect('/admin/dashboard');
-    } elseif (Auth::user()->role == 'mentor') {
-        return redirect('/mentor/dashboard');
-    } elseif (Auth::user()->role == 'student') {
-        return redirect('/student/dashboard');
-    } else {
-        return redirect('/');
-    }
-})->name('home');
 Route::get('/', [FrontendController::class, 'index']);
 Route::get('/about', [FrontendController::class, 'about'])->name('frontend.about');
-Route::get('/blog', BlogController::class . '@index');
-Route::get('/blog/{slug}', BlogController::class . '@show');
-Route::resource('post', PostController::class);
-
-Route::get('/gallery', function () {
-    return view('frontend.gallery');
-});
+Route::get('/blog', [FrontendController::class, 'blog']);
+Route::get('/blog/{post:slug}', [FrontendController::class, 'post']);
+Route::get('/gallery', [FrontendController::class, 'gallery']);
 
 // Start Route for Student Profile
 // Route::get('student/profile/edit/{id}', [StuProfileController::class, 'edit'])->name('student.profile.edit');
@@ -48,14 +31,19 @@ Route::get('/gallery', function () {
 // Route::post('student/testimoni/store', [StuTestimoniController::class, 'store'])->name('student.testimoni.store');
 
 // also frontend, but for logeed in user and student role
-Route::middleware(['auth', 'student'])->group(function () {
-    //Route::get('/consult', [FrontendController::class, 'consult'])->middleware('student')->name('frontend.consult');
-    Route::get('/student/dashboard', [FrontendController::class, 'consult'])->middleware('student')->name('student.dashboard');
+Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::get('/consult', [FrontendController::class, 'consult'])->name('frontend.consult');
+    Route::prefix('student')->as('student.')->group(function(){
+        Route::get('consult-session', [StudentConsultSessionController::class, 'index']);
+        Route::get('consult-session/history', [StudentConsultSessionController::class, 'history']);
+        Route::post('consult-session', [StudentConsultSessionController::class, 'store']);
+        Route::get('mentor/{mentor}', [StudentConsultSessionController::class, 'get_mentor']);
+    });
 });
 // End Route for Frontend View
 
-// Start Route for Mentor
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth', 'role:admin']], function () {
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard')->withoutMiddleware('role:admin');
     Route::prefix('admin/user')->group(function () {
         Route::prefix('student')->group(function () {
             Route::get('/', [StudentController::class, 'index'])->name('user.student.index');
@@ -86,62 +74,20 @@ Route::group(['middleware' => 'auth'], function () {
         });
     });
 
-    Route::prefix('admin/consult-session')->group(function () {
+    Route::prefix('admin/consult-session')->withoutMiddleware('role:admin')->middleware('role:admin,mentor')->group(function () {
         Route::get('/', [ConsultSessionController::class, 'index'])->name('consult-session.index');
         Route::get('/create', [ConsultSessionController::class, 'create'])->name('consult-session.create');
         Route::post('/store', [ConsultSessionController::class, 'store'])->name('consult-session.store');
         Route::get('/edit/{id}', [ConsultSessionController::class, 'edit'])->name('consult-session.edit');
         Route::put('/update/{id}', [ConsultSessionController::class, 'update'])->name('consult-session.update');
         Route::delete('/delete/{id}', [ConsultSessionController::class, 'destroy'])->name('consult-session.destroy');
+        Route::put('/save-link/{consult}', [ConsultSessionController::class, 'save_link'])->name('consult-session.save-link');
     });
 
-    //Route::resource('post', PostController::class);
+    Route::resource('post', PostController::class);
     Route::resource('category', CategoryController::class);
-    Route::resource('todo', TodoController::class);
-    Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
-    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-
-    // Route::get('admin/testimoni/', [TestimoniController::class, 'index'])->name('testimoni.index');
-    // Route::get('admin/testimoni/', [TestimoniController::class, 'create'])->name('testimoni.create');
-});
-// End Route for Mentor
-
-// Start Route for Admin
-Route::prefix('admin/testimoni')->group(function () {
-    Route::get('/', [TestimoniController::class, 'index'])->name('testimoni.index');
-    Route::get('/create', [TestimoniController::class, 'create'])->name('testimoni.create');
-    Route::post('/store', [TestimoniController::class, 'store'])->name('testimoni.store');
-    Route::get('/edit/{id}', [TestimoniController::class, 'edit'])->name('testimoni.edit');
-    Route::put('/update/{id}', [TestimoniController::class, 'update'])->name('testimoni.update');
-    Route::delete('/delete/{id}', [TestimoniController::class, 'destroy'])->name('testimoni.destroy');
-});
-
-Route::prefix('admin/dashboard')->group(function () {
-    Route::get('/', [TestimoniController::class, 'index'])->name('testimoni.index');
-    Route::get('/create', [TestimoniController::class, 'create'])->name('testimoni.create');
-    Route::post('/store', [TestimoniController::class, 'store'])->name('testimoni.store');
-    Route::get('/edit/{id}', [TestimoniController::class, 'edit'])->name('testimoni.edit');
-    Route::put('/update/{id}', [TestimoniController::class, 'update'])->name('testimoni.update');
-    Route::delete('/delete/{id}', [TestimoniController::class, 'destroy'])->name('testimoni.destroy');
-});
-
-Route::prefix('/testimoni')->group(function () {
-    Route::get('/', [TestimoniController::class, 'index'])->name('testimoni.index');
-    Route::get('/create', [TestimoniController::class, 'create'])->name('testimoni.create');
-    Route::post('/store', [TestimoniController::class, 'store'])->name('testimoni.store');
-    Route::get('/edit/{id}', [TestimoniController::class, 'edit'])->name('testimoni.edit');
-    Route::put('/update/{id}', [TestimoniController::class, 'update'])->name('testimoni.update');
-    Route::delete('/delete/{id}', [TestimoniController::class, 'destroy'])->name('testimoni.destroy');
-});
-
-Route::prefix('admin/category')->group(function () {
-    Route::get('/', [CategoryController::class, 'index'])->name('category.index');
-    Route::get('/create', [CategoryController::class, 'create'])->name('category.create');
-    Route::post('/store', [CategoryController::class, 'store'])->name('category.store');
-    Route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('category.edit');
-    Route::put('/update/{id}', [CategoryController::class, 'update'])->name('category.update');
-    Route::delete('/delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
+    Route::resource('todo', TodoController::class)->withoutMiddleware('role:admin');
+    Route::resource('admin/gallery', GalleryController::class);
 });
 
 // End Route for Admin
@@ -150,7 +96,6 @@ Route::prefix('student/testimoni')->group(function () {
     Route::get('/', [TestimoniController::class, 'index'])->name('testimoni.index');
     Route::get('/create', [TestimoniController::class, 'create'])->name('testimoni.create');
     Route::post('/store', [TestimoniController::class, 'store'])->name('testimoni.store');
-    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
     // Start Route for Student Testimoni
     Route::get('/testimoni', [StuTestimoniController::class, 'create'])->name('student.testimoni.create');

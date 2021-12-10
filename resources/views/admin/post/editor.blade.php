@@ -1,13 +1,11 @@
 @extends('layouts.admin.app')
+
 @section ('content')
-@php
-$url = Route::current()->getName();
-@endphp
 <div class="main-content" style="min-height: 524px;">
     <section class="section">
         <div class="section-header">
             <div class="section-header-back">
-                <a href="features-posts.html" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                <a href="/post" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
             <h1>Create New Article</h1>
             <div class="section-header-breadcrumb">
@@ -28,22 +26,29 @@ $url = Route::current()->getName();
                         <div class="card-header">
                             <h4>Write Your Post</h4>
                         </div>
-                        <form action="{{ $route }}" method="POST">
+                        <form action="{{ $route }}" method="POST" enctype="multipart/form-data">
+                            <div class="d-flex justify-content-center">
+                                <img src="{{ asset(isset($post)?'images/banners/'.$post->banner:'assets/admin/img/news/img01.jpg') }}" style="max-height: 150px" id="preview-img" alt="" class="img-thumbnail">
+                            </div>
                             @csrf
                             @method($method)
                             <div class="card-body">
                                 <div class="form-group row mb-4">
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Banner</label>
+                                    <div class="col-sm-12 col-md-7">
+                                        <input type="file" name="banner" id="banner" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Title</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="title" class="form-control"
-                                            value="{{ str_contains($url, 'edit') ? $post->title : '' }}">
+                                        <input type="text" name="title" class="form-control" value="{{ old('title',$post->title??'') }}">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Slug</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="slug" class="form-control"
-                                            value="{{ str_contains($url, 'edit') ? $post->slug : '' }}">
+                                        <input type="text" name="slug" class="form-control" value="{{ old('slug',$post->slug??'') }}">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
@@ -51,13 +56,9 @@ $url = Route::current()->getName();
                                         class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Category</label>
                                     <div class="col-sm-12 col-md-7">
                                         <select name="category" id="category" class="form-control" required autofocus>
-                                            <!-- <option value="">Category</option>
+                                            <!-- <option value="">Category</option>-->
                                             @foreach($categories as $category)
-                                            <option value="{{ str_contains($url, 'edit') ? $post->category_id : $category->id }}">{{ $category->category_name }}</option>
-                                            @endforeach -->
-                                            @foreach ($categories as $category)
-                                            <option value="{{ $category->id}}" {{old('category_id')==$category->
-                                                id?'selected' : ''}}>{{ $category->category_name}}</option>
+                                            <option value="{{ $category->id }}" {{ old('category', $post->category_id??'')==$category->id?'selected':'' }}>{{ $category->category_name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -65,15 +66,13 @@ $url = Route::current()->getName();
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Excerpt</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="excerpt" class="form-control"
-                                            value="{{ str_contains($url, 'edit') ? $post->excerpt : '' }}">
+                                        <input type="text" name="excerpt" class="form-control" value="{{ old('excerpt', $post->excerpt??'') }}">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Body</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <textarea class="form-control summernote" style="display: none;"
-                                            name="body">{{ str_contains($url, 'edit') ? $post->body : '' }}</textarea>
+                                        <textarea class="summernote" name="body">{{ old('body', $post->body??'') }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -83,13 +82,25 @@ $url = Route::current()->getName();
                                     <button class="btn btn-primary">Create Post</button>
                                 </div>
                             </div>
-                    </div>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
-        </form>
+    </form>
 </div>
 </section>
 </div>
+@endsection
+
+@section('script')
+    <script>
+        $('#banner').on('change', function(){
+            const [file] = $(this)[0].files;
+            if(file){
+                $('#preview-img').attr('src', URL.createObjectURL(file))
+            }
+        })
+    </script>
+
 @endsection
