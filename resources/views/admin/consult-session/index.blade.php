@@ -19,7 +19,6 @@
                 You can manage all {{ $title }}, such as editing, deleting and more.
             </p>
 
-
             <div class="row mt-4">
                 <div class="col-12">
                     <div class="card">
@@ -39,27 +38,31 @@
                                             <th>Mentor</th>
                                             <th>Dimulai</th>
                                             <th>Berakhir</th>
-
+                                            <th>Tautan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($consult as $c)
                                         <tr>
                                             <td>{{ $c->topic }}
+                                                @if (Auth::user()->role == 'admin' || Auth::user()->role == 'mentor')
                                                 <div class="table-links">
                                                     <a href="{{ route('consult-session.edit',$c->id) }}">Edit</a>
                                                     <div class="bullet"></div>
+                                                    @if (Auth::user()->role == 'admin')
                                                     <a href="#" onclick="event.preventDefault(); $('#destroy-{{ $c->id }}').submit()">Delete</a>
                                                     <form id="destroy-{{ $c->id }}" action="{{ route('consult-session.destroy',$c->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
+                                                    @endif
                                                 </div>
+                                                @endif
                                             </td>
                                             <td>{{ $c->mentor }}</td>
                                             <td>{{ $c->start_at }}</td>
                                             <td>{{ $c->end_at }}</td>
-
+                                            <td><a href="{{ $c->link }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Lihat</a></td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -79,6 +82,5 @@
     $(document).ready(function() {
         $('#table_id').DataTable();
     });
-
 </script>
 @endsection

@@ -20,6 +20,12 @@ $url = Route::current()->getName();
             <h2 class="section-title">Create New Testimoni</h2>
             <p class="section-lead">
                 On this page you can create a new Testimoni and fill in all fields.
+                <br>
+                @isset($error)
+            <div class="alert alert-danger">
+                {{ $error }}
+            </div>
+            @endisset
             </p>
 
             <div class="row">
@@ -35,15 +41,13 @@ $url = Route::current()->getName();
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Title</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="title" class="form-control"
-                                            value="{{ str_contains($url, 'edit') ? $ts->title : '' }}">
+                                        <input type="text" name="title" class="form-control" value="{{ str_contains($url, 'edit') ? $ts->title : '' }}">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Body</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <textarea class="form-control summernote" style="display: none;"
-                                            name="testimoni">{{ str_contains($url, 'edit') ? $ts->testimoni : '' }}</textarea>
+                                        <textarea class="form-control summernote" style="display: none;" name="testimoni">{{ str_contains($url, 'edit') ? $ts->testimoni : '' }}</textarea>
                                     </div>
                                 </div>
                             </div>

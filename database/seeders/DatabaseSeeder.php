@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -15,6 +16,12 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         \App\Models\User::insert(
             [
+                [
+                    'name' => 'Admin',
+                    'email' => 'admin@test.com',
+                    'password' => bcrypt('123456'),
+                    'role' => 'admin',
+                ],
                 [
                     'name' => 'Salma Fauziah',
                     'email' => 'salma@test.com',

@@ -20,6 +20,12 @@ $url = Route::current()->getName();
             <h2 class="section-title">Create New {{ $title }}</h2>
             <p class="section-lead">
                 On this page you can create a new {{ $title }} and fill in all fields.
+                <br>
+                @isset($error)
+            <div class="alert alert-danger">
+                {{ $error }}
+            </div>
+            @endisset
             </p>
 
             <div class="row">

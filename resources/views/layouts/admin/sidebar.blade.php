@@ -19,7 +19,7 @@
                         <li class="active"><a class="nav-link" href="/post">Posting</a></li>
                         <li class="active"><a class="nav-link" href="{{ route('category.index') }}">Kategori</a></li>
                     </ul>
-                    <li><a class="nav-link" href="{{ route('gallery.index') }}"><i class="fas fa-image"></i> <span>Galeri</span></a></li>
+                <li><a class="nav-link" href="{{ route('gallery.index') }}"><i class="fas fa-image"></i> <span>Galeri</span></a></li>
                 </li>
                 @endif
                 <li><a class="nav-link" href="{{ route('testimoni.index') }}"><i class="fas fa-image"></i> <span>Testimoni</span></a></li>
@@ -39,13 +39,13 @@
                     </ul>
                 </li>
                 </li>
-                <li>@if(Auth::user()->role == 'admin' || Auth::user()->role == 'mentor')
+                <li>
                 <li class="dropdown active">
                     <a href="#" class="nav-link has-dropdown"><i class="fas fa-comment-dots"></i> <span>Konsultasi</span></a>
                     <ul class="dropdown-menu" style="display: none;">
                         <li class="active"><a class="nav-link" href="/admin/consult-session">Kelola Jadwal</a></li>
                     </ul>
-                </li>@endif
+                </li>
                 </li>
                 <li>
                 <li class="dropdown active">

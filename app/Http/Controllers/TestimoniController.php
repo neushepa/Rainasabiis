@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Testimoni;
@@ -13,11 +14,19 @@ class TestimoniController extends Controller
      */
     public function index()
     {
-        $data = [
-            'title' => 'List Artikel',
-            'testimoni'  => Testimoni::get(),
-            'route' => route('testimoni.create'),
-        ];
+        if (auth()->user()->role == 'admin') {
+            $data = [
+                'title' => 'List Artikel',
+                'testimoni'  => Testimoni::all(),
+                'route' => route('testimoni.create'),
+            ];
+        } else {
+            $data = [
+                'title' => 'List Artikel',
+                'testimoni'  => Testimoni::where('user_id', auth()->user()->id)->get(),
+                'route' => route('testimoni.create'),
+            ];
+        }
         return view('admin.testimoni.index', $data);
     }
 
@@ -44,6 +53,17 @@ class TestimoniController extends Controller
      */
     public function store(Request $request)
     {
+        $checkTestimoni = Testimoni::where('user_id', auth()->user()->id)->first();
+
+        if ($checkTestimoni) {
+            $data = [
+                'title' => 'New Article',
+                'method' => 'POST',
+                'route' => route('testimoni.store'),
+            ];
+
+            return view('admin.testimoni.editor', $data)->with('error', 'Anda hanya bisa membuat 1 testimoni');
+        }
         $ts = new Testimoni;
         $user_id = auth()->user()->id;
 
@@ -112,5 +132,13 @@ class TestimoniController extends Controller
         $destroy = Testimoni::where('id', $id);
         $destroy->delete();
         return redirect(route('testimoni.index'));
+    }
+
+    public function status($id)
+    {
+        $testimoni = Testimoni::find($id);
+        $testimoni->status = ($testimoni->status == 1) ? 0 : 1;
+        $testimoni->save();
+        return redirect()->route('testimoni.index');
     }
 }

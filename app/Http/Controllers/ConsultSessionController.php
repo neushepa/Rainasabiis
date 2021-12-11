@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\ConsultSession;
@@ -57,6 +58,23 @@ class ConsultSessionController extends Controller
             'start_at' => 'required',
             'link' => 'required',
         ]);
+
+        $checkSession = ConsultSession::where('mentor_id', intval($request->mentor_id))
+            ->where('start_at', '>=', date('Y-m-d H:i:s', strtotime($request->start_at)))
+            ->where('end_at', '<=', date('Y-m-d H:i:s', strtotime($request->end_at)))
+            ->first();
+
+        if ($checkSession) {
+
+            $data = [
+                'title' => 'Buat Konsultasi',
+                'method' => 'POST',
+                'mentor' => User::where('role', 'mentor')->get(),
+                'student' => User::where('role', 'student')->get(),
+                'route' => route('consult-session.store')
+            ];
+            return view('admin.consult-session.editor', $data)->with('error', 'Jadwal Konsultasi sudah ada');
+        }
 
         $consult = new ConsultSession;
         $consult->topic = $request->topic;
