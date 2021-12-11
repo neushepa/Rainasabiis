@@ -58,7 +58,7 @@
                                 <td>{{ strip_tags(str_replace('&nbsp;', ' ', $ts->testimoni)) }}</td>
                                 <td>{{ $ts->created_at }}</td>
                                 <td>{{ $ts->user->name }}</td>
-                                <td>{!! ($ts->status == 0) ? '<span style="color: red;">Not Approved</span>' : '<span style="color: green;">Approved</span>' !!}</td>
+                                <td>{!! ($ts->status == 0) ? '<span style="color: red;">Waiting</span>' : '<span style="color: green;">Approved</span>' !!}</td>
                             </tr>
                             @elseif(Auth::user()->role == 'mentor' || Auth::user()->role == 'admin')
                             <tr>

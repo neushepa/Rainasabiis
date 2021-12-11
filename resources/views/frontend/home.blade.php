@@ -35,4 +35,6 @@
 
 @include('layouts.frontend.list')
 
+@include('layouts.frontend.testi')
+
 @endsection

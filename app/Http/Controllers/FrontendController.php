@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ConsultSession;
 use App\Models\Post;
+use App\Models\Testimoni;
 use App\Models\User;
 
 class FrontendController extends Controller
@@ -12,6 +13,8 @@ class FrontendController extends Controller
         $data = [
             //'title' => 'Blog List',
             'post' => Post::orderBy('created_at', 'desc')->paginate(3),
+            'mentors' => User::where('role', 'mentor')->get(),
+            'testimonis' => Testimoni::where('status', '1')->get(),
         ];
         //dd($data);
         return view('/frontend.home', $data);

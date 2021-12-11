@@ -26,9 +26,8 @@
                   <div class="card-header">
                     <h4>All Posts</h4>
                   </div>
+                  
                   <div class="card-body">
-
-
                     <div class="clearfix mb-3"></div>
 
                     <div class="table-responsive">

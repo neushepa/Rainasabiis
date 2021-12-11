@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Category;
@@ -16,12 +15,11 @@ class CategoryController extends Controller
     public function index()
     {
         $data= [
-        'title' => 'List Kategori',
-        'category'  => Category::get(),
-        'route' => route('category.create'),
-    ];
-    return view('admin.category.index', $data);
-
+            'title' => 'List Kategori',
+            'category'  => Category::get(),
+            'route' => route('category.create'),
+        ];
+        return view('admin.category.index', $data);
     }
 
     /**
@@ -36,7 +34,7 @@ class CategoryController extends Controller
             'method' => 'POST',
             'route' => route('category.store'),
         ];
-        return view('admin.category.editor',$data);
+        return view('admin.category.editor', $data);
     }
 
     /**
@@ -113,6 +111,6 @@ class CategoryController extends Controller
     {
         $destroy =Category::where('id', $id);
         $destroy->delete();
-        return redirect(route("category.index"));
+        return redirect(route('category.index'));
     }
 }

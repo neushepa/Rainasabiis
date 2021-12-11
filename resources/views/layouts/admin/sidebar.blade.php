@@ -19,19 +19,23 @@
                         <li class="active"><a class="nav-link" href="/post">Posting</a></li>
                         <li class="active"><a class="nav-link" href="{{ route('category.index') }}">Kategori</a></li>
                     </ul>
-                    <li><a class="nav-link" href="#"><i class="fas fa-image"></i> <span>Galeri</span></a></li>
+                    <li><a class="nav-link" href="{{ route('gallery.index') }}"><i class="fas fa-image"></i> <span>Galeri</span></a></li>
                 </li>
                 @endif
                 <li><a class="nav-link" href="{{ route('testimoni.index') }}"><i class="fas fa-image"></i> <span>Testimoni</span></a></li>
 
                 <li>
+                    @if(Auth::user()->role == 'admin' || Auth::user()->role == 'mentor')
                 <li class="dropdown active">
                     <a href="#" class="nav-link has-dropdown"><i class="fas fa-user"></i> <span>Pengguna</span></a>
+                    @endif
                     <ul class="dropdown-menu" style="display: none;">
                         @if(Auth::user()->role == 'admin')
                         <li class="active"><a class="nav-link" href="{{ route('mentor.index') }}">Mentor</a></li>
                         @endif
+                        @if(Auth::user()->role == 'mentor')
                         <li class="active"><a class="nav-link" href="/admin/user/student">Siswa</a></li>
+                        @endif
                     </ul>
                 </li>
                 </li>
@@ -47,7 +51,7 @@
                 <li class="dropdown active">
                     <a href="#" class="nav-link has-dropdown"><i class="fas fa-cog"></i> <span>Pengaturan</span></a>
                     <ul class="dropdown-menu" style="display: none;">
-                        <li class="active"><a class="nav-link" href="#">Kelola Profile</a></li>
+                        <li class="active"><a class="nav-link" href="{{ route('profile.edit', Auth::user()->id) }}">Kelola Profile</a></li>
                         <li class="active"><a class="nav-link" href="#">Backup</a></li>
                         <li class="active"><a class="nav-link" href="#">Import</a></li>
                         <li class="active"><a class="nav-link" href="#">Ganti Password</a></li>

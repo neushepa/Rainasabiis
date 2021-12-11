@@ -4,7 +4,9 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConsultSessionController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ListMentorController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -18,6 +20,10 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 // Start Route for Frontend View
+Route::get('/galery', function () {
+    return view('frontend.gallery');
+});
+
 Route::get('/home', function () {
     if (Auth::user()->role == 'admin') {
         return redirect('/admin/dashboard');
@@ -34,10 +40,6 @@ Route::get('/about', [FrontendController::class, 'about'])->name('frontend.about
 Route::get('/blog', BlogController::class . '@index');
 Route::get('/blog/{slug}', BlogController::class . '@show');
 Route::resource('post', PostController::class);
-
-Route::get('/gallery', function () {
-    return view('frontend.gallery');
-});
 
 // Start Route for Student Profile
 // Route::get('student/profile/edit/{id}', [StuProfileController::class, 'edit'])->name('student.profile.edit');
@@ -142,6 +144,15 @@ Route::prefix('admin/category')->group(function () {
     Route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('category.edit');
     Route::put('/update/{id}', [CategoryController::class, 'update'])->name('category.update');
     Route::delete('/delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
+});
+
+Route::prefix('/gallery')->group(function () {
+    Route::get('/', [GalleryController::class, 'index'])->name('gallery.index');
+    Route::get('/create', [GalleryController::class, 'create'])->name('gallery.create');
+    Route::post('/store', [GalleryController::class, 'store'])->name('gallery.store');
+    Route::get('/edit/{id}', [GalleryController::class, 'edit'])->name('gallery.edit');
+    Route::put('/update/{id}', [GalleryController::class, 'update'])->name('gallery.update');
+    Route::delete('/delete/{id}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
 });
 
 // End Route for Admin
