@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\ConsultSession;
@@ -15,13 +14,30 @@ class ConsultSessionController extends Controller
      */
     public function index()
     {
-        $data = [
-            'title' => 'Konsultasi',
-            'method' => 'GET',
-            'route' => route('consult-session.create'),
-            'consult' => ConsultSession::get()
-        ];
+        // $data = [
+        //     'title' => 'Konsultasi',
+        //     'method' => 'GET',
+        //     'route' => route('consult-session.create'),
+        //     'consult' => ConsultSession::get()
+        // ];
 
+        // return view('admin.consult-session.index', $data);
+
+        if (auth()->user()->role == 'student') {
+            $data = [
+                'title' => 'Konsultasi',
+                'method' => 'GET',
+                'consult'  => ConsultSession::where('user_id', auth()->user()->id)->get(),
+                'route' => route('consult-session.create'),
+            ];
+        } else {
+            $data = [
+                'title' => 'Konsultasi',
+                'method' => 'GET',
+                'consult'  => ConsultSession::all(),
+                'route' => route('consult-session.create'),
+            ];
+        }
         return view('admin.consult-session.index', $data);
     }
 
@@ -32,15 +48,18 @@ class ConsultSessionController extends Controller
      */
     public function create()
     {
-        $data = [
-            'title' => 'Buat Konsultasi',
-            'method' => 'POST',
-            'mentor' => User::where('role', 'mentor')->get(),
-            'student' => User::where('role', 'student')->get(),
-            'route' => route('consult-session.store')
-        ];
-
-        return view('admin.consult-session.editor', $data);
+        $checkKonsul = ConsultSession::where('user_id', auth()->user()->id)
+                        ->Where('Date(created_at) = CURDATE()');
+        if ($checkKonsul) {
+            $data = [
+                'title' => 'Buat Konsultasi',
+                'method' => 'POST',
+                'mentor' => User::where('role', 'mentor')->get(),
+                'student' => User::where('role', 'student')->get(),
+                'route' => route('consult-session.store'),
+            ];
+            return view('admin.consult-session.editor', $data)->with('error', 'Anda sudah mengajukan jadwal konsultasi pada hari ini');
+        }
     }
 
     /**
@@ -56,16 +75,16 @@ class ConsultSessionController extends Controller
             'user_id' => 'required',
             'mentor_id' => 'required',
             'start_at' => 'required',
-            'link' => 'required',
+            //'link' => 'required',
         ]);
 
         $checkSession = ConsultSession::where('mentor_id', intval($request->mentor_id))
+            // ->where('status', 1)
             ->where('start_at', '>=', date('Y-m-d H:i:s', strtotime($request->start_at)))
             ->where('end_at', '<=', date('Y-m-d H:i:s', strtotime($request->end_at)))
             ->first();
 
         if ($checkSession) {
-
             $data = [
                 'title' => 'Buat Konsultasi',
                 'method' => 'POST',
@@ -73,7 +92,7 @@ class ConsultSessionController extends Controller
                 'student' => User::where('role', 'student')->get(),
                 'route' => route('consult-session.store')
             ];
-            return view('admin.consult-session.editor', $data)->with('error', 'Jadwal Konsultasi sudah ada');
+            return view('admin.consult-session.editor', $data)->with('error', 'Jadwal Konsultasi tidak tersedia');
         }
 
         $consult = new ConsultSession;
@@ -82,7 +101,7 @@ class ConsultSessionController extends Controller
         $consult->mentor_id = $request->mentor_id;
         $consult->start_at = date('Y-m-d H:i:s', strtotime($request->start_at));
         $consult->end_at = date('Y-m-d H:i:s', strtotime($request->end_at));
-        $consult->link = $request->link;
+        $consult->link = '-';
         $consult->save();
 
         return redirect()->route('consult-session.index')->with('success', 'Consult has been created');
@@ -117,13 +136,13 @@ class ConsultSessionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'topic' => 'required',
-            'user_id' => 'required',
-            'mentor_id' => 'required',
-            'start_at' => 'required',
-            'link' => 'required',
-        ]);
+        // $request->validate([
+        //     'topic' => 'required',
+        //     'user_id' => 'required',
+        //     'mentor_id' => 'required',
+        //     'start_at' => 'required',
+        //     'link' => 'required',
+        // ]);
 
         $consult = ConsultSession::where('id', $id)->first();
         $consult->topic = $request->topic;
@@ -132,8 +151,9 @@ class ConsultSessionController extends Controller
         $consult->start_at = date('Y-m-d H:i:s', strtotime($request->start_at));
         $consult->end_at = date('Y-m-d H:i:s', strtotime($request->end_at));
         $consult->link = $request->link;
+        $consult->status = 1;
         $consult->save();
-
+        //dd($request, $id);
         return redirect()->route('consult-session.index')->with('success', 'Consult has been updated');
     }
 
@@ -147,5 +167,13 @@ class ConsultSessionController extends Controller
     {
         ConsultSession::find($id)->delete();
         return redirect()->route('consult-session.index')->with('success', 'Consult has been deleted');
+    }
+
+    public function status($id)
+    {
+        $consult = ConsultSession::find($id);
+        $consult->status = ($consult->status == 1) ? 0 : 1;
+        $consult->save();
+        return redirect()->route('consult-session.index');
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Testimoni;
@@ -16,13 +15,13 @@ class TestimoniController extends Controller
     {
         if (auth()->user()->role == 'admin') {
             $data = [
-                'title' => 'List Artikel',
+                'title' => 'List Testimoni',
                 'testimoni'  => Testimoni::all(),
                 'route' => route('testimoni.create'),
             ];
         } else {
             $data = [
-                'title' => 'List Artikel',
+                'title' => 'List Testimoni',
                 'testimoni'  => Testimoni::where('user_id', auth()->user()->id)->get(),
                 'route' => route('testimoni.create'),
             ];
@@ -38,7 +37,7 @@ class TestimoniController extends Controller
     public function create()
     {
         $data = [
-            'title' => 'New Article',
+            'title' => 'New Testimoni',
             'method' => 'POST',
             'route' => route('testimoni.store'),
         ];

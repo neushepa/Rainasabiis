@@ -6,15 +6,17 @@ use App\Http\Controllers\ConsultSessionController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ListMentorController;
 use App\Http\Controllers\MentorController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StuProfileController;
 use App\Http\Controllers\StuTestimoniController;
 use App\Http\Controllers\TestimoniController;
 use App\Http\Controllers\TodoController;
+use App\Http\Controllers\UjiancController;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes();
@@ -23,6 +25,10 @@ Auth::routes();
 Route::get('/galery', function () {
     return view('frontend.gallery');
 });
+
+// Route::get('/tentang', function () {
+//     return view('frontend.about');
+// });
 
 Route::get('/home', function () {
     if (Auth::user()->role == 'admin') {
@@ -37,6 +43,7 @@ Route::get('/home', function () {
 })->name('home');
 Route::get('/', [FrontendController::class, 'index']);
 Route::get('/about', [FrontendController::class, 'about'])->name('frontend.about');
+Route::get('/consult', [FrontendController::class, 'konsul'])->name('frontend.consult');
 Route::get('/blog', BlogController::class . '@index');
 Route::get('/blog/{slug}', BlogController::class . '@show');
 Route::resource('post', PostController::class);
@@ -97,6 +104,24 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/delete/{id}', [ConsultSessionController::class, 'destroy'])->name('consult-session.destroy');
     });
 
+    Route::prefix('admin/page')->group(function () {
+        Route::get('/', [PageController::class, 'index'])->name('page.index');
+        Route::get('/create', [PageController::class, 'create'])->name('page.create');
+        Route::post('/store', [PageController::class, 'store'])->name('page.store');
+        Route::get('/edit/{id}', [PageController::class, 'edit'])->name('page.edit');
+        Route::put('/update/{id}', [PageController::class, 'update'])->name('page.update');
+        Route::delete('/delete/{id}', [PageController::class, 'destroy'])->name('page.destroy');
+    });
+
+    Route::prefix('admin/question')->group(function () {
+        Route::get('/', [QuestionController::class, 'index'])->name('question.index');
+        Route::get('/create', [QuestionController::class, 'create'])->name('question.create');
+        Route::post('/store', [QuestionController::class, 'store'])->name('question.store');
+        Route::get('/edit/{id}', [QuestionController::class, 'edit'])->name('question.edit');
+        Route::put('/update/{id}', [QuestionController::class, 'update'])->name('question.update');
+        Route::delete('/delete/{id}', [QuestionController::class, 'destroy'])->name('question.destroy');
+    });
+
     //Route::resource('post', PostController::class);
     Route::resource('category', CategoryController::class);
     Route::resource('todo', TodoController::class);
@@ -155,6 +180,15 @@ Route::prefix('/gallery')->group(function () {
     Route::delete('/delete/{id}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
 });
 
+// Route::prefix('admin/page')->group(function () {
+//     Route::get('/', [PageController::class, 'index'])->name('page.index');
+//     Route::get('/create', [PageController::class, 'create'])->name('page.create');
+//     Route::post('/store', [PageController::class, 'store'])->name('page.store');
+//     Route::get('/edit/{id}', [PageController::class, 'edit'])->name('page.edit');
+//     Route::put('/update/{id}', [PageController::class, 'update'])->name('page.update');
+//     Route::delete('/delete/{id}', [PageController::class, 'destroy'])->name('page.destroy');
+// });
+
 // End Route for Admin
 
 Route::prefix('student/testimoni')->group(function () {
@@ -168,7 +202,17 @@ Route::prefix('student/testimoni')->group(function () {
     Route::post('/testimoni/store', [StuTestimoniController::class, 'store'])->name('student.testimoni.store');
 });
 
+Route::prefix('student/tpa')->group(function () {
+    Route::get('/test', [UjiancController::class, 'create'])->name('student.ujian.create');
+    Route::post('/store', [UjiancController::class, 'store'])->name('student.ujian.store');
+    Route::get('/hasil', [UjiancController::class, 'hasil'])->name('student.ujian.hasil');
+
+    // Start Route for Student Testimoni
+    //Route::post('/testimoni/store', [StuTestimoniController::class, 'store'])->name('student.testimoni.store');
+});
+
 Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::put('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
 
 Route::get('/testimoni/status/{id}', [TestimoniController::class, 'status'])->name('testimoni.status');
+Route::get('/consult-session/status/{id}', [ConsultSessionController::class, 'status'])->name('consult.status');

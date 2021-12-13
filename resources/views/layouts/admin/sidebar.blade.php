@@ -11,17 +11,26 @@
                 <i class="fas fa-rocket"></i> Dashboard
             </a>
             <ul class="sidebar-menu">
-                <li><a class="nav-link" href="/todo"><i class="fas fa-calendar"></i> <span>To Do</span></a></li>
+                {{-- <li><a class="nav-link" href="/todo"><i class="fas fa-calendar"></i> <span>To Do</span></a></li> --}}
                 @if(Auth::user()->role == 'admin' || Auth::user()->role == 'mentor')
+                <li><a class="nav-link" href="/admin/page"><i class="fas fa-image"></i> <span>Pages</span></a></li>
                 <li class="dropdown active">
                     <a href="#" class="nav-link has-dropdown"><i class="fas fa-edit"></i> <span>Artikel</span></a>
                     <ul class="dropdown-menu" style="display: none;">
                         <li class="active"><a class="nav-link" href="/post">Posting</a></li>
                         <li class="active"><a class="nav-link" href="{{ route('category.index') }}">Kategori</a></li>
                     </ul>
-                <li><a class="nav-link" href="{{ route('gallery.index') }}"><i class="fas fa-image"></i> <span>Galeri</span></a></li>
                 </li>
+                <li class="dropdown active">
+                    <a href="#" class="nav-link has-dropdown"><i class="fas fa-edit"></i> <span>TPA</span></a>
+                    <ul class="dropdown-menu" style="display: none;">
+                        <li class="active"><a class="nav-link" href="/admin/question/">Pertanyaan</a></li>
+                        <li class="active"><a class="nav-link" href="{{ route('student.ujian.hasil') }}">Hasil</a></li>
+                    </ul>
+                </li>
+                <li><a class="nav-link" href="{{ route('gallery.index') }}"><i class="fas fa-image"></i> <span>Galeri</span></a></li>
                 @endif
+                <li><a class="nav-link" href="{{ route('student.ujian.create') }}"><i class="fas fa-image"></i> <span>Test TPA</span></a></li>
                 <li><a class="nav-link" href="{{ route('testimoni.index') }}"><i class="fas fa-image"></i> <span>Testimoni</span></a></li>
 
                 <li>
@@ -52,13 +61,13 @@
                     <a href="#" class="nav-link has-dropdown"><i class="fas fa-cog"></i> <span>Pengaturan</span></a>
                     <ul class="dropdown-menu" style="display: none;">
                         <li class="active"><a class="nav-link" href="{{ route('profile.edit', Auth::user()->id) }}">Kelola Profile</a></li>
-                        <li class="active"><a class="nav-link" href="#">Backup</a></li>
-                        <li class="active"><a class="nav-link" href="#">Import</a></li>
-                        <li class="active"><a class="nav-link" href="#">Ganti Password</a></li>
+                        {{-- <li class="active"><a class="nav-link" href="#">Backup</a></li>
+                        <li class="active"><a class="nav-link" href="#">Import</a></li> --}}
+                        {{-- <li class="active"><a class="nav-link" href="#">Ganti Password</a></li> --}}
                     </ul>
                 </li>
                 </li>
-                <li><a class="nav-link" href="/credit"><i class="fas fa-fire"></i> <span>Credits</span></a></li>
+                {{-- <li><a class="nav-link" href="/credit"><i class="fas fa-fire"></i> <span>Credits</span></a></li> --}}
             </ul>
     </aside>
 </div>

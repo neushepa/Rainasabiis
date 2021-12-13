@@ -20,7 +20,8 @@ class CreateConsultSessionsTable extends Migration
             $table->string('topic');
             $table->string('start_at');
             $table->string('end_at');
-            $table->string('link');
+            $table->string('link')->default('-');
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }

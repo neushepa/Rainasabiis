@@ -35,9 +35,11 @@
                                     <thead>
                                         <tr>
                                             <th>Topik</th>
+                                            <th>Siswa</th>
                                             <th>Mentor</th>
                                             <th>Dimulai</th>
-                                            <th>Berakhir</th>
+                                            {{-- <th>Berakhir</th> --}}
+                                            <th>Status</th>
                                             <th>Tautan</th>
                                         </tr>
                                     </thead>
@@ -59,10 +61,21 @@
                                                 </div>
                                                 @endif
                                             </td>
+                                            <td>{{ $c->User->name }}</td>
                                             <td>{{ $c->mentor }}</td>
                                             <td>{{ $c->start_at }}</td>
-                                            <td>{{ $c->end_at }}</td>
-                                            <td><a href="{{ $c->link }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Lihat</a></td>
+                                            {{-- <td>{{ $c->end_at }}</td> --}}
+                                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'mentor')
+                                            <td><a href="{{ route('consult.status', ['id' => $c->id]) }}">{!! $c->status_text !!}</a></td>
+                                            @else
+                                            <td>{!! $c->status_text !!}</td>
+                                            @endif
+                                            @if($c->status =='0')
+                                            <td><a href="{{ $c->link }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Belum Tersedia</a></td>
+                                            @else
+                                            <td><a href="{{ $c->link }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Tersedia</a></td>
+                                            @endif
+
                                         </tr>
                                         @endforeach
                                     </tbody>

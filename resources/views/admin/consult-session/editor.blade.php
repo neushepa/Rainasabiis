@@ -48,10 +48,14 @@ $url = Route::current()->getName();
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Siswa</label>
                                     <div class="col-sm-12 col-md-7">
                                         <select name="user_id" id="siwa" class="form-control" required autofocus>
-                                            <option disabled>Siswa</option>
+                                            <option disabled>Pilih Siswa</option>
+                                            @if(Auth::user()->role == 'admin' || Auth::user()->role == 'mentor')
                                             @foreach($student as $s)
                                             <option value="{{ str_contains($url, 'edit') ? $consult->user->id : $s->id }}">{{ $s->name }}</option>
                                             @endforeach
+                                            @else
+                                            <option value="{{ str_contains($url, 'edit') ? $consult->Auth::user()->id : Auth::user()->id }}">{{ Auth::user()->name }}</option>
+                                            @endif
                                         </select>
                                     </div>
                                 </div>
@@ -59,9 +63,9 @@ $url = Route::current()->getName();
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Mentor</label>
                                     <div class="col-sm-12 col-md-7">
                                         <select name="mentor_id" id="mentor" class="form-control" required autofocus>
-                                            <option disabled>Mentor</option>
+                                            <option disabled>Pilih Mentor</option>
                                             @foreach($mentor as $m)
-                                            <option value="{{ str_contains($url, 'edit') ? $consult->user->id : $m->id }}">{{ $m->name }}</option>
+                                            <option value="{{ str_contains($url, 'edit') ? $consult->mentor_id : $m->id }}">{{ $m->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -72,23 +76,26 @@ $url = Route::current()->getName();
                                         <input type="datetime-local" name="start_at" class="form-control" value="{{ str_contains($url, 'edit') ? $consult->start_at : $m->start_at }}">
                                     </div>
                                 </div>
+                                @if(Auth::user()->role == 'admin' || Auth::user()->role == 'mentor')
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Berakhir</label>
                                     <div class="col-sm-12 col-md-7">
                                         <input type="datetime-local" name="end_at" class="form-control" value="{{ str_contains($url, 'edit') ? $consult->end_at : $m->end_at }}">
                                     </div>
                                 </div>
+
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tautan</label>
                                     <div class="col-sm-12 col-md-7">
                                         <input type="text" name="link" class="form-control" value="{{ str_contains($url, 'edit') ? $consult->link : '' }}">
                                     </div>
                                 </div>
+                                @endif
                             </div>
                             <div class="form-group row mb-4">
                                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
                                 <div class="col-sm-12 col-md-7">
-                                    <button class="btn btn-primary">Save</button>
+                                    <button class="btn btn-primary">Buat Jadwal</button>
                                 </div>
                             </div>
                     </div>

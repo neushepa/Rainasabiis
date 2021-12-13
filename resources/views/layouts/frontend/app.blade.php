@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="ico/favicon-16x16.png">
     {{-- <link rel="manifest" href="ico/manifest.json"> --}}
 
-    <title class="card-title">Website SahabatBK</title>
+    <title class="card-title">Website Sahabat BK</title>
     <link rel="stylesheet" href="../assets/beka/css/maicons.css">
     <link rel="stylesheet" href="../assets/beka/css/bootstrap.css">
     <link rel="stylesheet" href="../assets/beka/vendor/owl-carousel/css/owl.carousel.css">

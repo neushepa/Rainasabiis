@@ -54,9 +54,8 @@
                                         Login
                                     </button>
                                 </div>
-
                             </form>
-                            <div class="text-center mt-4 mb-3">
+                            {{-- <div class="text-center mt-4 mb-3">
                                 <div class="text-job text-muted">Masuk Menggunakan Sosial Media</div>
                             </div>
                             <div class="row sm-gutters">
@@ -65,7 +64,7 @@
                                         <span class="fab fa-google"></span>Continue With Google
                                     </a>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <!-- <div class="mt-5 text-muted text-center">

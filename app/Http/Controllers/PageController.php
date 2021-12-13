@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Page;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -12,7 +13,12 @@ class PageController extends Controller
      */
     public function index()
     {
-        //
+        $data = [
+            'title' => 'List Artikel',
+            'page'  => Page::get(),
+            'route' => route('page.create'),
+        ];
+        return view('admin.page.index', $data);
     }
 
     /**
@@ -22,7 +28,12 @@ class PageController extends Controller
      */
     public function create()
     {
-        //
+        $data = [
+            'title' => 'New Page',
+            'method' => 'POST',
+            'route' => route('page.store'),
+        ];
+        return view('admin.page.editor', $data);
     }
 
     /**
@@ -33,7 +44,15 @@ class PageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $page = new Page;
+        $user_id = auth()->user()->id;
+        $page->user_id = $user_id;
+        $page->p_title = $request->p_title;
+        $page->p_slug = $request->p_slug;
+        $page->p_excerpt = $request->p_excerpt;
+        $page->p_body = $request->p_body;
+        $page->save();
+        return redirect()->route('page.index');
     }
 
     /**
@@ -42,9 +61,14 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        // $data = [
+        //     'title' => 'Post Detail',
+        //     'page' => Page::where('slug', $slug)->first()
+        // ];
+        // //dd($data);
+        // return view('frontend.about', $data);
     }
 
     /**
@@ -55,7 +79,13 @@ class PageController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = [
+            'title' => 'Edit Page',
+            'method' => 'PUT',
+            'route' => route('page.update', $id),
+            'pages' => Page::where('id', $id)->first(),
+        ];
+        return view('admin.page.editor', $data);
     }
 
     /**
@@ -67,7 +97,14 @@ class PageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $page = page::find($id);
+        //$user_id = auth()->user()->id;
+        $page->p_title = $request->p_title;
+        $page->p_slug = $request->p_slug;
+        $page->p_excerpt = $request->p_excerpt;
+        $page->p_body = $request->p_body;
+        $page->update();
+        return redirect()->route('page.index');
     }
 
     /**
@@ -78,6 +115,8 @@ class PageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $destroy =Page::where('id', $id);
+        $destroy->delete();
+        return redirect(route('page.index'));
     }
 }

@@ -25,7 +25,7 @@
                     <a href="#" class="nav-link has-dropdown"><i class="fas fa-cog"></i> <span>Pengaturan</span></a>
                     <ul class="dropdown-menu" style="display: none;">
                         <li class="active"><a class="nav-link" href="#">Kelola Profile</a></li>
-                        <li class="active"><a class="nav-link" href="#">Ganti Password</a></li>
+                        {{-- <li class="active"><a class="nav-link" href="#">Ganti Password</a></li> --}}
                     </ul>
                 </li>
                 </li>

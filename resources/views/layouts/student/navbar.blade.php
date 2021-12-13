@@ -143,9 +143,9 @@
 
                     <i class="far fa-user"></i> Profile
                 </a>
-                <a href="/support" class="dropdown-item has-icon">
+                {{-- <a href="/support" class="dropdown-item has-icon">
                     <i class="fas fa-cog"></i> Support
-                </a>
+                </a> --}}
                 <div class="dropdown-divider"></div>
                 <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-item has-icon text-danger">
                     <i class="fas fa-sign-out-alt"></i> Logout

@@ -1,7 +1,7 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
         <div class="container">
-            <img src="../assets/beka/img/logo.png.png" width="150px" height="75" alt="yes">
+            <a href="\"><img src="../assets/beka/img/logo.png.png" width="150px" height="75" alt="yes"></a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupport" aria-controls="navbarSupport" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -26,6 +26,9 @@
                     </li>
                     <li class="nav-item">
                         @auth
+                        <li class="nav-item {{ request()->is('gallery')?'active':'' }}">
+                            <a class="nav-link" href="/dashboard">Dashboard</a>
+                        </li>
                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a>

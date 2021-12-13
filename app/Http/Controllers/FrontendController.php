@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ConsultSession;
+use App\Models\Page;
 use App\Models\Post;
 use App\Models\Testimoni;
 use App\Models\User;
@@ -30,13 +31,26 @@ class FrontendController extends Controller
         return view('student.dashboard', $data);
     }
 
-    public function about()
-    {
-        return view('frontend.about');
-    }
-
     public function blog()
     {
         return view('frontend.blog');
+    }
+
+    public function about()
+    {
+        $data = [
+            'title' => 'About US',
+            'page' => Page::where('p_slug', 'about')->first()
+        ];
+        return view('frontend.about', $data);
+    }
+
+    public function konsul()
+    {
+        $data = [
+            'title' => 'About US',
+            'page' => Page::where('p_slug', 'consult')->first()
+        ];
+        return view('frontend.consult', $data);
     }
 }
